@@ -3605,6 +3605,9 @@ function render_ag_profile() {
         <label class="fl">تأكيد كلمة المرور الجديدة *</label>
         <input class="fc" type="password" id="prof-confirm" placeholder="أعد كتابة كلمة المرور الجديدة">
       </div>
+      <label style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--mu);margin-bottom:14px;cursor:pointer">
+        <input type="checkbox" onchange="togglePwFields(this,['prof-old','prof-new','prof-confirm'])" style="width:16px;height:16px;cursor:pointer"> 👁 إظهار كلمات المرور
+      </label>
       <div id="prof-msg" style="display:none;padding:9px 12px;border-radius:8px;font-size:12px;margin-bottom:12px"></div>
       <button class="btn btn-p" onclick="agChangePass()">حفظ كلمة المرور الجديدة</button>
     </div>`;
@@ -3721,6 +3724,12 @@ function render_c_agencies() {
 }
 window.render_c_agencies = render_c_agencies;
 // ─── Committee Profile ───
+function togglePwFields(cb, ids) {
+  const t = cb.checked ? 'text' : 'password';
+  ids.forEach(id => { const el = document.getElementById(id); if (el) el.type = t; });
+}
+window.togglePwFields = togglePwFields;
+
 function render_c_profile() {
   document.getElementById('c-profile').innerHTML = `
     <div class="ph"><div class="pht"><h1>بياناتي</h1><p>تعديل معلومات حساب إدارة الجودة</p></div></div>
@@ -3740,6 +3749,9 @@ function render_c_profile() {
       <div class="fg"><label class="fl">كلمة المرور الحالية *</label><input class="fc" type="password" id="cprof-old" placeholder="أدخل كلمة المرور الحالية"></div>
       <div class="fg"><label class="fl">كلمة المرور الجديدة *</label><input class="fc" type="password" id="cprof-new" placeholder="كلمة مرور جديدة (6 أحرف على الأقل)"></div>
       <div class="fg"><label class="fl">تأكيد كلمة المرور الجديدة *</label><input class="fc" type="password" id="cprof-confirm" placeholder="أعد كتابة كلمة المرور الجديدة"></div>
+      <label style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--mu);margin-bottom:14px;cursor:pointer">
+        <input type="checkbox" onchange="togglePwFields(this,['cprof-old','cprof-new','cprof-confirm'])" style="width:16px;height:16px;cursor:pointer"> 👁 إظهار كلمات المرور
+      </label>
       <div id="cprof-msg" style="display:none;padding:9px 12px;border-radius:8px;font-size:12px;margin-bottom:12px"></div>
       <button class="btn btn-p" onclick="cChangePass()">حفظ كلمة المرور الجديدة</button>
     </div>`;
@@ -4864,6 +4876,9 @@ function render_rv_profile() {
       <div class="fg"><label class="fl">كلمة المرور الحالية *</label><input class="fc" type="password" id="rvp-old"></div>
       <div class="fg"><label class="fl">كلمة المرور الجديدة *</label><input class="fc" type="password" id="rvp-new"></div>
       <div class="fg"><label class="fl">تأكيد كلمة المرور *</label><input class="fc" type="password" id="rvp-conf"></div>
+      <label style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--mu);margin-bottom:14px;cursor:pointer">
+        <input type="checkbox" onchange="togglePwFields(this,['rvp-old','rvp-new','rvp-conf'])" style="width:16px;height:16px;cursor:pointer"> 👁 إظهار كلمات المرور
+      </label>
       <div id="rvp-msg" style="display:none;padding:9px 12px;border-radius:8px;font-size:12px;margin-bottom:12px"></div>
       <button class="btn btn-p" onclick="rvChangePass()">حفظ كلمة المرور الجديدة</button>
     </div>`;
