@@ -779,7 +779,7 @@ async function cSend() {
     id: 'p'+Date.now()+Math.random().toString(36).slice(2,5),
     crit_idx: smi, crit_title: `معيار ${mainCrit.num}: ${mainCrit.title}`,
     proc: `${subCrit.num} — ${subCrit.title}`,
-    agency: ag, agency_name: AGS[ag].name,
+    agency: ag, agency_name: (getAllAgencies()[ag]||{}).name || ag,
     committee_note: note, committee_file: fn,
     agency_file_note: '', agency_uploaded_at: '',
     agency_note: '', resubmit_count: 0,
@@ -1610,8 +1610,9 @@ window.render_c_track = render_c_track;
 //  ختم مصدر الملف — يوضّح أي جهة رفعت الملف
 // ═══════════════════════════════════════════
 function srcStamp(agencyKey, agencyName, dateStr) {
-  const ic = (typeof AGS!=='undefined' && AGS[agencyKey]?.icon) || '🏢';
-  const nm = agencyName || (AGS[agencyKey]?.name) || 'جهة غير محددة';
+  const _ag = (typeof getAllAgencies==='function' ? getAllAgencies() : (typeof AGS!=='undefined'?AGS:{}))[agencyKey] || {};
+  const ic = _ag.icon || '🏢';
+  const nm = agencyName || _ag.name || 'جهة غير محددة';
   const dt = dateStr ? ` · ${fmtDate(dateStr)}` : '';
   return `<span style="display:inline-flex;align-items:center;gap:4px;background:#eef4f7;border:1px solid #cfe0e9;color:#123a4d;border-radius:20px;padding:2px 10px;font-size:10.5px;font-weight:700;margin:4px 4px 0 0">🔖 مصدر: ${ic} ${nm}${dt}</span>`;
 }
@@ -4518,7 +4519,7 @@ async function rvSend() {
     id:'p'+Date.now()+Math.random().toString(36).slice(2,5),
     crit_idx:smi, crit_title:`معيار ${mainCrit.num}: ${mainCrit.title}`,
     proc:`${subCrit.num} — ${subCrit.title}`,
-    agency:ag, agency_name:AGS[ag].name,
+    agency:ag, agency_name:(getAllAgencies()[ag]||{}).name || ag,
     committee_note:note, committee_file:'',
     agency_file_note:'', agency_uploaded_at:'',
     agency_note:'', resubmit_count:0,
