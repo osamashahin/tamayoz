@@ -460,7 +460,11 @@ async function loadAll() {
   // Apply saved settings (passwords + extra agencies)
   let __awardsLoaded = false, __oldCrit = null, __oldReq = null;
   if (settings && settings.length) {
-    settings.forEach(s => {
+    // رتّب الإعدادات: أنشئ الجهات/المراجعين أولاً ثم طبّق كلمات المرور المُغيَّرة (pass_*) بعدها
+    // حتى لا تُفقد كلمة مرور مُغيَّرة بسبب ترتيب القراءة من قاعدة البيانات
+    const __order = k => (k==='extra_agencies'||k==='reviewers'||k==='base_users') ? 0 : (k && k.startsWith('pass_') ? 2 : 1);
+    const __sortedSettings = [...settings].sort((a,b)=>__order(a.key)-__order(b.key));
+    __sortedSettings.forEach(s => {
       try {
         const val = JSON.parse(s.value);
         if (s.key === 'extra_agencies') {
@@ -574,7 +578,12 @@ async function doLogin() {
   document.getElementById('err').classList.remove('show');
   if(!u||!p) { showErr('يرجى إدخال اسم المستخدم وكلمة المرور'); return; }
   btn.innerHTML='جاري التحقق <span class="spinner"></span>'; btn.disabled=true;
-  await new Promise(r=>setTimeout(r,500));
+  // تحميل الحسابات وكلمات المرور المحدَّثة من قاعدة البيانات قبل التحقق
+  // (يضمن عمل الحسابات المُنشأة وكلمات المرور المُغيَّرة فوراً دون الحاجة لدخول الأدمن)
+  try { await loadAll(); } catch(e) {
+    btn.innerHTML='دخول ←'; btn.disabled=false;
+    showErr('❗ تعذّر الاتصال بقاعدة البيانات — تحقّق من الإنترنت وحاول مرة أخرى'); return;
+  }
   const user=USERS[u];
   if(!user||user.pass!==p) {
     btn.innerHTML='دخول ←'; btn.disabled=false;
@@ -605,8 +614,7 @@ async function enterApp() {
   showPage('pg-app');
   loading(true, 'جاري تحميل البيانات...');
   try {
-    await loadAll();
-    // حفظ كلمات المرور الأصلية إن لم تكن محفوظة
+    // البيانات حُمّلت للتو في doLogin؛ نحفظ كلمات المرور الأصلية إن لزم
     await saveInitialPasswords();
     loading(false);
     if(CU.role==='committee') buildCommittee();
