@@ -2434,7 +2434,7 @@ function render_c_all() {
   document.getElementById('c-all').innerHTML=`
     <div class="ph"><div class="pht"><h1>جميع الإجراءات</h1></div><button class="btn btn-g btn-sm" onclick="cExp()">⬇ CSV</button></div>
     <div class="card" style="margin-bottom:10px"><div style="display:flex;gap:8px;flex-wrap:wrap">
-      <select class="fc" style="width:auto" id="ca-a" onchange="render_c_all()"><option value="">جميع الجهات</option><option value="exec">🏢</option><option value="programs">📋</option><option value="finance">💼</option></select>
+      <select class="fc" style="width:auto" id="ca-a" onchange="render_c_all()"><option value="">جميع الجهات</option>${Object.entries({...AGS,...EXTRA_AGENCIES}).map(([k,ag])=>`<option value="${k}">${ag.icon||'🏢'} ${ag.name}</option>`).join('')}</select>
       <select class="fc" style="width:auto" id="ca-s" onchange="render_c_all()"><option value="">جميع الحالات</option><option value="pending">انتظار</option><option value="uploaded">جاهز</option><option value="approved">معتمد</option><option value="rejected">مُرجع</option></select>
     </div></div>
     <div class="card"><div class="tw"><table class="tbl"><thead><tr><th>#</th><th>المعيار</th><th>الإجراء</th><th>المعيار الفرعي</th><th>الجهة</th><th>الحالة</th><th>ملاحظات اللجنة</th><th>مستند الجهة</th><th>الإرسال</th><th>×</th></tr></thead><tbody>
@@ -3455,7 +3455,7 @@ function render_adm_all() {
   document.getElementById('adm-all').innerHTML=`
     <div class="ph"><div class="pht"><h1>جميع الإجراءات</h1></div><div style="display:flex;gap:8px"><button class="btn btn-g btn-sm" onclick="admExp()">⬇ CSV</button><button class="btn btn-g btn-sm" onclick="admPrint()">🖨</button></div></div>
     <div class="card" style="margin-bottom:10px"><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-      <select class="fc" style="width:auto" id="adm-fa" onchange="render_adm_all()"><option value="">جميع الجهات</option><option value="exec">🏢</option><option value="programs">📋</option><option value="finance">💼</option></select>
+      <select class="fc" style="width:auto" id="adm-fa" onchange="render_adm_all()"><option value="">جميع الجهات</option>${Object.entries({...AGS,...EXTRA_AGENCIES}).map(([k,ag])=>`<option value="${k}">${ag.icon||'🏢'} ${ag.name}</option>`).join('')}</select>
       <select class="fc" style="width:auto" id="adm-fs" onchange="render_adm_all()"><option value="">جميع الحالات</option><option value="pending">انتظار</option><option value="uploaded">جاهز</option><option value="approved">معتمد</option><option value="rejected">مُرجع</option></select>
       <button class="btn btn-er btn-sm" onclick="admDelF()">حذف المُصفّى</button>
     </div></div>
@@ -4436,9 +4436,7 @@ function rvBuildSend() {
       <div class="fg"><label class="fl">الجهة *</label>
         <select class="fc" id="rv-agency">
           <option value="">— اختر —</option>
-          <option value="exec">🏢 الإدارة التنفيذية</option>
-          <option value="programs">📋 إدارة البرامج والمشاريع</option>
-          <option value="finance">💼 الإدارة المالية والإدارية</option>
+          ${Object.entries({...AGS,...EXTRA_AGENCIES}).map(([k,ag])=>`<option value="${k}">${ag.icon||'🏢'} ${ag.name}</option>`).join('')}
         </select></div>
       <div class="fg"><label class="fl">نموذج استرشادي (اختياري)</label>
         <div class="uz" id="rv-guide-uz" onclick="document.getElementById('rv-guide-f').click()">📎 أرفق نموذجاً استرشادياً للجهة</div>
